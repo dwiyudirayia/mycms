@@ -1,0 +1,8 @@
+.m-image-cover {
+  background-image: url('../assets/app/media/img/bg/bg-9.jpg');
+  background-size: cover;
+}
+
+.modal {
+  margin: 60px;
+}
