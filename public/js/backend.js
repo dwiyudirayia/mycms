@@ -5,9 +5,33 @@ $(document).ready(function () {
         }
     });
     $('.summernote').summernote({
-        height: 150,
-        focus: true
+        height: 200,
+        focus: true,
+        callbacks: {
+            onMediaDelete: function (target) {
+                alert(target[0].src);
+                deleteImageIsi(target[0].src);
+            }
+        }
     });
+    function deleteImageIsi(src)
+    {
+        $.ajax({
+            url: '/deleteImageIsi',
+            type: 'POST',
+            data: {
+                src: src
+            },
+            success: function (res)
+            {
+                console.log(src)
+            },
+            error: function (res)
+            {
+                console.log(res)
+            }
+        })
+    }    
     //-----------------------------------------------------------------------------------------------------------------//
 
     //Backend JS Kategori
@@ -120,7 +144,7 @@ $(document).ready(function () {
             "newestOnTop": true,
             "progressBar": true,
             "positionClass": "toast-top-right",
-            "preventDuplicates": true,
+            "preventDuplicates": false,
             "onclick": null,
             "showDuration": "300",
             "hideDuration": "1000",
@@ -249,9 +273,9 @@ $(document).ready(function () {
             url: 'artikel/' + param + '/edit',
             type: 'GET',
             dataType: 'JSON',
-            success: function (data) {
-                $('#judul').val(data.artikel_form[0].judul);
-                $('#isi').val(data.artikel_form[0].isi);
+            success: function (data) {                
+                $('#judul').val(data.artikel_form[0].judul);                
+                $('#isi').summernote('code', data.artikel_form[0].isi);
                 $('#status_artikel').val(data.artikel_form[0].status_artikel);
                 let option;
                 $.map(data.kategori, function (value) {
