@@ -53,8 +53,6 @@ class ArtikelController extends Controller
     public function store(ArtikelRequest $request)
     {
         //Handle File Upload
-        if($request->hasFile('headerImage'))
-        {
             $isi = $request->input('isi');
 
             $dom = new \DomDocument();
@@ -73,6 +71,8 @@ class ArtikelController extends Controller
                 $img->setAttribute('src', $image_name);
             }
             $detail = $dom->saveHTML();
+            if($request->hasFile('headerImage'))
+            {            
             //Get Filename with The Extension
             $filenameWithExt = $request->file('headerImage')->getClientOriginalName();
 
@@ -88,7 +88,8 @@ class ArtikelController extends Controller
             $path = $request->file('headerImage')->storeAs('public/artikel/headerImage',$filenameToStore);
             
         } else {
-            $filenameToStore = 'noimage.jpg';
+            $filenameToStore = 'default_image.jpg';
+            $path = $request->file('headerImage')->storeAs('public/artikel/headerImage',$filenameToStore);
         }
 
         $this->artikel->create([
@@ -149,14 +150,60 @@ class ArtikelController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         try {
             $artikel = ArtikelModel::findOrFail($id);
+            $isi = $request->input('isi');
+
+            $dom = new \DomDocument();
+            $dom->loadHtml($isi, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);    
+
+            $images = $dom->getElementsByTagName('img');
+            foreach($images as $k => $img){
+                $data = $img->getAttribute('src');
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
+                $image_name= "/upload/" . time().$k.'.png';    
+                $path = public_path() . $image_name;    
+                file_put_contents($path, $data);    
+                $img->removeAttribute('src');    
+                $img->setAttribute('src', $image_name);
+            }
+            $detail = $dom->saveHTML();
+            if($request->hasFile('headerImage'))
+            {            
+            $deleteHeaderImage = public_path().'/storage/artikel/headerImage/'.$artikel->headerImage;
+            File::delete($deleteHeaderImage);    
+            //Get Filename with The Extension
+            $filenameWithExt = $request->file('headerImage')->getClientOriginalName();
+
+            //Get Just Filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            
+            //Get Just Ext
+            $extension = $request->file('headerImage')->getClientOriginalExtension();
+
+            //Filename to Store
+            $filenameToStore = $filename.'_'.time().'.'.$extension;
+
+            $path = $request->file('headerImage')->storeAs('public/artikel/headerImage',$filenameToStore);
+
             $artikel->kategori_id = $request->input('kategori_id');
             $artikel->users_id = Auth::user()->id;
-            $artikel->judul = $request->input('judul');
-            $artikel->isi = $request->input('isi');
+            $artikel->judul = $request->input('judul');            
+            $artikel->headerImage = $filenameToStore;
+            $artikel->isi = $detail;
             $artikel->status_artikel = $request->input('status_artikel');
             $artikel->save();
+            } else {                                
+                $artikel->kategori_id = $request->input('kategori_id');
+                $artikel->users_id = Auth::user()->id;
+                $artikel->judul = $request->input('judul');            
+                $artikel->isi = $detail;
+                $artikel->status_artikel = $request->input('status_artikel');
+                $artikel->save();    
+            }            
         } catch (\Exception $e) {
 
         }

@@ -32,6 +32,7 @@
                 </button>
             </div>
             <form id="triggerReset">
+                {{csrf_field()}}
                 <div class="modal-body">
                     <p id="textInfo"></p>
                     <div id="formInfo" class="m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-height="200" style="overflow: auto; height: 200px;">
@@ -41,6 +42,10 @@
                             <input type="hidden" name="id" id="idParam">
                             <input type="hidden" name="_method" id="method">                        
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">                    
+                        </div>
+                        <div class="form-group">
+                            <label for="headerImage">Header Image</label>
+                            <input type="file" name="headerImage" id="headerImage" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Kategori</label>

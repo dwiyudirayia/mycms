@@ -8,30 +8,26 @@ $(document).ready(function () {
         height: 200,
         focus: true,
         callbacks: {
-            onMediaDelete: function (target) {
-                alert(target[0].src);
-                deleteImageIsi(target[0].src);
+            onMediaDelete: function (target) {                
+                deleteImageIsi(target[0].src);                
             }
         }
     });
-    function deleteImageIsi(src)
-    {
+    function deleteImageIsi(src) {
         $.ajax({
             url: '/deleteImageIsi',
             type: 'POST',
             data: {
                 src: src
             },
-            success: function (res)
-            {
+            success: function (res) {
                 console.log(src)
             },
-            error: function (res)
-            {
+            error: function (res) {
                 console.log(res)
             }
         })
-    }    
+    }
     //-----------------------------------------------------------------------------------------------------------------//
 
     //Backend JS Kategori
@@ -65,29 +61,29 @@ $(document).ready(function () {
         filterable: !0,
         pagination: !0,
         columns: [{
-                field: "id",
-                title: "#",
-                sortable: !1,
-                width: 0,
-                selector: {
-                    class: "m-checkbox--solid m-checkbox--brand"
-                },
-                textAlign: "center"
+            field: "id",
+            title: "#",
+            sortable: !1,
+            width: 0,
+            selector: {
+                class: "m-checkbox--solid m-checkbox--brand"
             },
-            {
-                field: "nama",
-                title: "Nama",
-                sortable: !0,
-                width: 180,
-                textAlign: "center",
-            },
-            {
-                field: "action",
-                title: "Action",
-                sortable: !0,
-                width: 180,
-                textAlign: "center",
-            }
+            textAlign: "center"
+        },
+        {
+            field: "nama",
+            title: "Nama",
+            sortable: !0,
+            width: 180,
+            textAlign: "center",
+        },
+        {
+            field: "action",
+            title: "Action",
+            sortable: !0,
+            width: 180,
+            textAlign: "center",
+        }
         ]
     });
     $('#kategori-table').on('click', '#deleteKategoriModal', function () {
@@ -227,34 +223,34 @@ $(document).ready(function () {
         filterable: !0,
         pagination: !0,
         columns: [{
-                field: "id",
-                title: "#",
-                sortable: !1,
-                width: 0,
-                selector: {
-                    class: "m-checkbox--solid m-checkbox--brand"
-                },
-                textAlign: "center"
+            field: "id",
+            title: "#",
+            sortable: !1,
+            width: 0,
+            selector: {
+                class: "m-checkbox--solid m-checkbox--brand"
             },
-            {
-                field: "judul",
-                title: "Judul",
-                sortable: !0,
-                width: 180,
-                textAlign: "center",
-            },
-            {
-                field: "action",
-                title: "Action",
-                sortable: !0,
-                width: 180,
-                textAlign: "center",
-            }
+            textAlign: "center"
+        },
+        {
+            field: "judul",
+            title: "Judul",
+            sortable: !0,
+            width: 180,
+            textAlign: "center",
+        },
+        {
+            field: "action",
+            title: "Action",
+            sortable: !0,
+            width: 180,
+            textAlign: "center",
+        }
         ]
     });
     $('#artikel-table').on('click', '#editArtikelModal', function () {
         const param = $(this).data('id');
-        const method = "PUT";
+        const method = "POST";
 
         $('#modalArtikel').modal({
             show: true
@@ -273,8 +269,8 @@ $(document).ready(function () {
             url: 'artikel/' + param + '/edit',
             type: 'GET',
             dataType: 'JSON',
-            success: function (data) {                
-                $('#judul').val(data.artikel_form[0].judul);                
+            success: function (data) {
+                $('#judul').val(data.artikel_form[0].judul);
                 $('#isi').summernote('code', data.artikel_form[0].isi);
                 $('#status_artikel').val(data.artikel_form[0].status_artikel);
                 let option;
@@ -332,18 +328,36 @@ $(document).ready(function () {
 
         const kategori_id = $('#kategori_id').val();
         const judul = $('#judul').val();
+        const headerImage = $('#headerImage')[0].files[0];        
         const isi = $('#isi').val();
         const status_artikel = $('#status_artikel').val();
+        const token = $('input[name=_token]').val();
+
+        const formData = new FormData();    
+        formData.append('kategori_id', kategori_id);
+        formData.append('judul', judul);
+        formData.append('headerImage', headerImage);
+        formData.append('isi', isi);
+        formData.append('status_artikel', status_artikel);
+        formData.append('_token', token);
+        formData.append('_method', 'PUT');
+        
+        const formDataPut = new FormData();    
+        formDataPut.append('kategori_id', kategori_id);
+        formDataPut.append('judul', judul);
+        formDataPut.append('headerImage', headerImage);
+        formDataPut.append('isi', isi);
+        formDataPut.append('status_artikel', status_artikel);
+        formDataPut.append('_token', token);
+        formDataPut.append('_method', 'PUT');
+
         $.ajax({
             type: method,
             url: ((judul == '') && (method == 'PUT')) ? 'gantiStatusArtikel/' + param : 'artikel/' + param,
-            data: {
-                kategori_id: kategori_id,
-                judul: judul,
-                isi: isi,
-                status_artikel: status_artikel,
-                '_token': $('input[name=_token]').val(),
-            },
+            data: ((judul == '') && (method == 'PUT') ? formDataPut : formData),
+            cache       : false,
+            contentType : false,
+            processData : false,
             success: function (data) {
                 notifikasiToastr();
                 toastr.success("Anda Berhasil Memproses Data", "Notifikasi");
@@ -357,6 +371,27 @@ $(document).ready(function () {
             }
         });
     });
+    // $('#triggerReset').submit(function(event) {
+    //     event.preventDefault();
+    //     var formData = new FormData($(this)[0]);
+    //     console.log(formData);
+    //     $.ajax({
+    //         url: 'artikelFormData/2',
+    //         type: 'POST',              
+    //         data: formData,
+    //         cache       : false,
+    //         contentType : false,
+    //         processData : false,
+    //         success: function(result)
+    //         {                
+    //         },
+    //         error: function(data)
+    //         {
+    //             console.log(data);
+    //         }
+    //     });
+    
+    // });    
     //-----------------------------------------------------------------------------------------------------------------//
     $('.m-menu__item').on('click', function () {
         $('.m-menu__item').removeClass('m-menu__item--active');
@@ -482,7 +517,7 @@ $(document).ready(function () {
     //                 </div>
     //             </div>
     //             </div>`;
-    
+
     //             })
     //             $('.row').html(getAllPosts);
     //         }

@@ -39,8 +39,8 @@
                 </div>
             </div>
             
-            <div class="m-widget19__body">
-                {!!  substr(strip_tags($artikel->isi), 0, 300) !!}         
+            <div class="m-widget19__body">                
+                {!! $artikel->isi !!}
             </div>
         </div>
                 <div class="m-widget19__action">

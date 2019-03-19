@@ -19,6 +19,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('artikel', 'ArtikelController');
+    Route::post('/artikelFormData/{id}','ArtikelController@update');
     Route::post('deleteImageIsi','ArtikelController@deleteImageIsi');
     Route::get('getArtikel','ArtikelController@getTableArtikel');
     Route::put('gantiStatusArtikel/{id}','ArtikelController@gantiStatus');
