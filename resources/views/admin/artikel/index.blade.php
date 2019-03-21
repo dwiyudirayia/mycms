@@ -64,11 +64,6 @@
                             <label for="">Isi</label>
                             <textarea name="isi" id="isi" cols="30" rows="10" class="form-control summernote" placeholder="Masukan Isi Artikel"></textarea>
                         </div>
-                        <div class="form-group">
-                            <input type="hidden" name="id" id="idParam">
-                            <input type="hidden" name="_method" id="method">                        
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

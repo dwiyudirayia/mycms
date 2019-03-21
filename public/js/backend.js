@@ -8,8 +8,8 @@ $(document).ready(function () {
         height: 200,
         focus: true,
         callbacks: {
-            onMediaDelete: function (target) {                
-                deleteImageIsi(target[0].src);                
+            onMediaDelete: function (target) {
+                deleteImageIsi(target[0].src);
             }
         }
     });
@@ -28,7 +28,26 @@ $(document).ready(function () {
             }
         })
     }
-    //-----------------------------------------------------------------------------------------------------------------//
+    function notifikasiToastr() {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    }
+    //----------------------------------------------------------------------------------------------------------------//
 
     //Backend JS Kategori
     const kategoriTable = $("#kategori-table").mDatatable({
@@ -80,7 +99,7 @@ $(document).ready(function () {
         {
             field: "action",
             title: "Action",
-            sortable: !0,
+            sortable: !1,
             width: 180,
             textAlign: "center",
         }
@@ -133,25 +152,6 @@ $(document).ready(function () {
         })
     })
 
-    function notifikasiToastr() {
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "3000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-    }
     $('#kategori-table').on('click', '#gantiStatus', function () {
         const param = $(this).data('id');
         const label = $(this).data('label');
@@ -180,6 +180,7 @@ $(document).ready(function () {
                 '_token': $('input[name=_token]').val(),
             },
             success: function () {
+                $('#triggerReset').trigger('reset');
                 notifikasiToastr();
                 toastr.success("Anda Berhasil Memproses Data", "Notifikasi");
                 $('#nama').val('');
@@ -192,7 +193,9 @@ $(document).ready(function () {
             }
         });
     });
-    //-----------------------------------------------------------------------------------------------------------------//
+    //----------------------------------------------------------------------------------------------------------------//
+
+    //Backend JS Artikel
     const artikelTable = $("#artikel-table").mDatatable({
         data: {
             type: "remote",
@@ -328,12 +331,12 @@ $(document).ready(function () {
 
         const kategori_id = $('#kategori_id').val();
         const judul = $('#judul').val();
-        const headerImage = $('#headerImage')[0].files[0];        
+        const headerImage = $('#headerImage')[0].files[0];
         const isi = $('#isi').val();
         const status_artikel = $('#status_artikel').val();
         const token = $('input[name=_token]').val();
 
-        const formData = new FormData();    
+        const formData = new FormData();
         formData.append('kategori_id', kategori_id);
         formData.append('judul', judul);
         formData.append('headerImage', headerImage);
@@ -342,7 +345,7 @@ $(document).ready(function () {
         formData.append('_token', token);
         formData.append('_method', 'PUT');
         
-        const formDataPut = new FormData();    
+        const formDataPut = new FormData();
         formDataPut.append('kategori_id', kategori_id);
         formDataPut.append('judul', judul);
         formDataPut.append('headerImage', headerImage);
@@ -355,9 +358,9 @@ $(document).ready(function () {
             type: method,
             url: ((judul == '') && (method == 'PUT')) ? 'gantiStatusArtikel/' + param : 'artikel/' + param,
             data: ((judul == '') && (method == 'PUT') ? formDataPut : formData),
-            cache       : false,
-            contentType : false,
-            processData : false,
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function (data) {
                 notifikasiToastr();
                 toastr.success("Anda Berhasil Memproses Data", "Notifikasi");
@@ -371,156 +374,133 @@ $(document).ready(function () {
             }
         });
     });
-    // $('#triggerReset').submit(function(event) {
-    //     event.preventDefault();
-    //     var formData = new FormData($(this)[0]);
-    //     console.log(formData);
-    //     $.ajax({
-    //         url: 'artikelFormData/2',
-    //         type: 'POST',              
-    //         data: formData,
-    //         cache       : false,
-    //         contentType : false,
-    //         processData : false,
-    //         success: function(result)
-    //         {                
-    //         },
-    //         error: function(data)
-    //         {
-    //             console.log(data);
-    //         }
-    //     });
-    
-    // });    
-    //-----------------------------------------------------------------------------------------------------------------//
-    $('.m-menu__item').on('click', function () {
-        $('.m-menu__item').removeClass('m-menu__item--active');
-        $(this).addClass('m-menu__item--active');
-    })
-    // $('.row').on('click', '.lihatDetail', function () {
-    //     $('.row').html('');
-    //     const getId = $(this).data('id');
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: 'lihatDetailPost/' + getId,
-    //         success: function (data) {                
-    //             let getDetail = `
-    //             <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height  m-portlet--rounded-force">
-    //             <div class="m-portlet__head m-portlet__head--fit">
-    //                 <div class="m-portlet__head-caption">
-    //                     <div class="m-portlet__head-action">
-    //                         <button type="button" class="btn btn-sm m-btn--pill  btn-brand">${data.data[0].nama}</button>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //             <div class="m-portlet__body">
-    //                 <div class="m-widget19">
-    //                     <div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides" style="min-height-: 286px">
-    //                         <img src="assets/app/media/img//blog/blog1.jpg" alt="">
-    //                         <h3 class="m-widget19__title m--font-light">
-    //                         ${data.data[0].judul}
-    //                         </h3>
-    //                     <div class="m-widget19__shadow"></div>
-    //                 </div>
-    //             <div class="m-widget19__content">
-    //                 <div class="m-widget19__header">
-    //                     <div class="m-widget19__user-img">
-    //                         <img class="m-widget19__img" src="assets/app/media/img//users/user1.jpg" alt="">
-    //                     </div>
-    //                     <div class="m-widget19__info">
-    //                         <span class="m-widget19__username">
-    //                         ${data.data[0].name}
-    //                         </span>
-    //                         <br>
-    //                         <span class="m-widget19__time">
-    //                         ${data.data[0].email}
-    //                         </span>
-    //                     </div>
-    //                 </div>
-    //                 <div class="m-widget19__body">
-    //                     ${data.data[0].isi}
-    //                 </div>
-    //             </div>
-    //                     <div class="m-widget19__action">
-    //                         <button type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom allPosts">Kembali</button>
-    //                     </div>
-    //                 </div>
-    //             </div>        
-    //         </div>
-    //     </div>`;
-    //             $('.row').html(getDetail);
-    //         }
-    //     })
-    // });
-    // $('.row').on('click', '.allPosts', function () {
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: '/getAllPosts',
-    //         dataType: 'json',
-    //         success: function (data) {
-    //             let getAllPosts = '';
-    //             $('.row').html('');
-    //             $.each(data.data, function (key, value) {
-    //                 getAllPosts = `
-    //                 <div class="row">
-    //                 <div class="col-xl-12 col-sm-12 col-md-12">
-    //                     <div class="m-portlet m-portlet--mobile ">
-    //                         <div class="m-portlet__head">
-    //                             <div class="m-portlet__head-caption">
-    //                                 <div class="m-portlet__head-title">
-    //                                     <h3 class="m-portlet__head-text">
-    //                                         Posts
-    //                                     </h3>
-    //                                 </div>
-    //                             </div>									
-    //                         </div>
-    //                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height  m-portlet--rounded-force">
-    //                 <div class="m-portlet__head m-portlet__head--fit">
-    //                     <div class="m-portlet__head-caption">
-    //                         <div class="m-portlet__head-action">
-    //                             <button type="button" class="btn btn-sm m-btn--pill  btn-brand">${data.data[0].nama}</button>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //                 <div class="m-portlet__body">
-    //                     <div class="m-widget19">
-    //                         <div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides" style="min-height-: 286px">
-    //                             <img src="assets/app/media/img//blog/blog1.jpg" alt="">
-    //                             <h3 class="m-widget19__title m--font-light">
-    //                             ${data.data[0].judul}
-    //                             </h3>
-    //                         <div class="m-widget19__shadow"></div>
-    //                     </div>
-    //                 <div class="m-widget19__content">
-    //                     <div class="m-widget19__header">
-    //                         <div class="m-widget19__user-img">
-    //                             <img class="m-widget19__img" src="assets/app/media/img//users/user1.jpg" alt="">
-    //                         </div>
-    //                         <div class="m-widget19__info">
-    //                             <span class="m-widget19__username">
-    //                             ${data.data[0].name}
-    //                             </span>
-    //                             <br>
-    //                             <span class="m-widget19__time">
-    //                             ${data.data[0].email}
-    //                             </span>
-    //                         </div>
-    //                     </div>
-    //                     <div class="m-widget19__body">
-    //                         ${data.data[0].isi}
-    //                     </div>
-    //                 </div>
-    //                         <div class="m-widget19__action">
-    //                             <button type="button" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom allPosts">Kembali</button>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //             </div>`;
+    //----------------------------------------------------------------------------------------------------------------//
 
-    //             })
-    //             $('.row').html(getAllPosts);
-    //         }
-    //     })
-    // })    
-})
+    // Backend JS Menu
+    const menuGroupingTable = $("#menuGrouping-table").mDatatable({
+        data: {
+            type: "remote",
+            source: {
+                read: {
+                    url: '/getMenu',
+                    method: 'GET',
+                }
+            },
+            pageSize: 10,
+            saveState: {
+                cookie: !1,
+                webstorage: !0
+            },
+            serverPaging: !0,
+            serverFiltering: !0,
+            serverSorting: !0,
+        },
+        layout: {
+            theme: "default",
+            class: "table table-bordered",
+            scroll: 10,
+            height: 300,
+            width: 100,
+            footer: 11,
+        },
+        sortable: !0,
+        filterable: !0,
+        pagination: !0,
+        columns: [{
+            field: "id",
+            title: "#",
+            sortable: !1,
+            width: 0,
+            selector: {
+                class: "m-checkbox--solid m-checkbox--brand"
+            },
+            textAlign: "center"
+        },
+        {
+            field: "nama",
+            title: "Nama",
+            sortable: !0,
+            width: 180,
+            textAlign: "center",
+        },
+        {
+            field: "action",
+            title: "Action",
+            sortable: !1,
+            width: 180,
+            textAlign: "center",
+        }
+        ]
+    });
+    $('#menuGrouping-table').on('click', '#deleteMenuGroupingModal', function () {
+        const param = $(this).data('id');
+        const label = $(this).data('label');
+        const method = "DELETE";
+
+        $('#modalMenuGrouping').modal({
+            show: true
+        });
+
+        $('#buttonSubmit').removeClass('btn-primary');
+        $('#buttonSubmit').addClass('btn-danger');
+        $('#buttonSubmit').text('Delete');
+        $('#modalMenuGroupingLabel').html('Delete Menu');
+        $('p').show();
+        $('p').html('Data Yang di Hapus Dengan Nama <strong>' + label + '</strong>');
+        $('#formInfo').hide();
+        $('#idParam').val(param);
+        $('#method').val(method);
+    })
+    $('#menuGrouping-table').on('click', '#editMenuGroupingModal', function () {
+        const param = $(this).data('id');
+        const method = "PUT";
+
+        $('#modalMenuGrouping').modal({
+            show: true
+        });
+
+        $('#buttonSubmit').addClass('btn-primary');
+        $('#buttonSubmit').removeClass('btn-danger');
+        $('#buttonSubmit').text('Submit');
+
+        $('p').hide();
+        $('#modalMenuGroupingLabel').html('Edit Menu');
+        $('#formInfo').show();
+        $('#idParam').val(param);
+        $('#method').val(method);
+
+        $.ajax({
+            url: 'menuGrouping/' + param + '/edit',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                $('#nama').val(data.nama);
+            }
+        })
+    })
+    $('#modalMenuGrouping').on('click', '#buttonSubmit', function () {
+        const param = $('#idParam').val();
+        const method = $('#method').val();        
+        const nama = $('#nama').val();
+        $.ajax({
+            type: method,
+            url: 'menuGrouping/' + param,
+            data: {
+                nama: nama,
+                '_token': $('input[name=_token]').val(),
+            },
+            success: function () {
+                $('#triggerReset').trigger('reset');
+                notifikasiToastr();
+                toastr.success("Anda Berhasil Memproses Data", "Notifikasi");
+                $('#nama').val('');
+                $('#modalMenuGrouping').modal('hide');
+                menuGroupingTable.reload();
+            },
+            error: function () {
+                notifikasiToastr();
+                toastr.error("Anda Gagal Memproses Data", "Notifikasi");
+            }
+        });
+    });
+});

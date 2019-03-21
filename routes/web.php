@@ -26,4 +26,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('kategori', 'KategoriArtikelController');
     Route::get('getKategori','KategoriArtikelController@getTableKategori');
     Route::put('gantiStatusKategori/{id}','KategoriArtikelController@gantiStatus');
+    Route::resource('menuGrouping', 'MenuGroupingController');
+    Route::get('/getMenu','MenuGroupingController@getMenu');
 });

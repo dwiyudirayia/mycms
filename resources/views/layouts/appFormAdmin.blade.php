@@ -42,7 +42,7 @@
                     <div class="m-login__info">
                         <div class="m-login__section">
                             <span>
-                                Devloped by
+                                Developed by
                             </span>
                             <a href="#" class="m-link">4 Vision Media</a>
                         </div>

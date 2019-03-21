@@ -8,7 +8,7 @@ class KategoriArtikelModel extends Model
 {
     protected $table = 'kategori_artikel';
     protected $fillable = [
-        'users_id','nama','status_kategori','status_kategori'
+        'users_id','nama','status_kategori'
     ];
 
     public function artikel() {

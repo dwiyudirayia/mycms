@@ -63,8 +63,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="PUT" action="{{route('kategori.store')}}">
-                    {{csrf_field()}}
+                <form method="PUT">                    
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nama Kategori</label>
                         <input type="name" class="form-control" name="nama" id="exampleFormControlInput1" placeholder="Masukan Nama Kategori">
