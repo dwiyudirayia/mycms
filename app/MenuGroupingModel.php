@@ -10,4 +10,7 @@ class MenuGroupingModel extends Model
     protected $fillable = [
         'menu'
     ];
+    public function page() {
+        return $this->belongsToMany('App\ProdukModel','page_menu','page_id','menu_id');
+    }
 }

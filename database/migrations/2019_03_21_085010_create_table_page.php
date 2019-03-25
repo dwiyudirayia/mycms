@@ -13,8 +13,10 @@ class CreateTablePage extends Migration
      */
     public function up()
     {
-        Schema::create('table_page', function (Blueprint $table) {
+        Schema::create('page', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('judul');
+            $table->text('isi');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateTablePage extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_page');
+        Schema::dropIfExists('page');
     }
 }

@@ -13,9 +13,12 @@ class CreateTablePageMenu extends Migration
      */
     public function up()
     {
-        Schema::create('table_page_menu', function (Blueprint $table) {
+        Schema::create('page_menu', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('page_id')->unsigned();
+            $table->foreign('page_id')->references('id')->on('page')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('menu_grouping_id')->unsigned();
+            $table->foreign('menu_grouping_id')->references('id')->on('menu_grouping')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -26,6 +29,6 @@ class CreateTablePageMenu extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_page_menu');
+        Schema::dropIfExists('page_menu');
     }
 }
