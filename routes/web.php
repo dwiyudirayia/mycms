@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('artikel', 'ArtikelController');
@@ -28,4 +31,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('gantiStatusKategori/{id}','KategoriArtikelController@gantiStatus');
     Route::resource('menuGrouping', 'MenuGroupingController');
     Route::get('/getMenu','MenuGroupingController@getMenu');
+    Route::get('usersIndex','ManagementUsersController@usersIndex');
+    Route::get('createUsers','ManagementUsersController@createUsers');
+    Route::post('oprationUsers','ManagementUsersController@storeUsers');
+    Route::delete('oprationUsers/{id}','ManagementUsersController@destroyUsers');
+    Route::get('oprationUsers/{id}/edit','ManagementUsersController@editUsers');
+    Route::put('oprationUsers/{id}/','ManagementUsersController@updateUsers');    
+    Route::get('getUsers','ManagementUsersController@getUsers');
+    Route::get('getApi','ManagementUsersController@getApi');
 });

@@ -53,28 +53,4 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editKategoriModal" tabindex="-1" role="dialog" aria-labelledby="editKategoriModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editKategoriModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="PUT">                    
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Nama Kategori</label>
-                        <input type="name" class="form-control" name="nama" id="exampleFormControlInput1" placeholder="Masukan Nama Kategori">
-                        <input type="hidden" name="_method" id="method">
-                        <input type="hidden" name="status_kategori" id="status_kategori">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </div>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                </form>                
-            </div>
-        </div>
-    </div>
-</div>
 @endsection

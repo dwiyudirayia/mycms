@@ -26,7 +26,7 @@ class CreateArtikelTable extends Migration
             ->onDelete('cascade')
             ->onUpdate('cascade');
             $table->string('judul');
-            $table->string('headerImage');
+            $table->string('headerImage')->nullable();
             $table->text('isi');
             $table->boolean('status_artikel');
             $table->timestamps();

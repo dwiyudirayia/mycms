@@ -192,21 +192,28 @@
 							<h4 class="m-menu__section-text">Optional</h4>
 							<i class="m-menu__section-icon flaticon-more-v2"></i>
 						</li>
-						<li class="m-menu__item {{ Route::currentRouteName() == 'kategori.index' ? 'm-menu__item--active' : '' }}" aria-haspopup="true">
+						<li class="m-menu__item" aria-haspopup="true">
 							<a href="{{ url('kategori') }}" class="m-menu__link"><i class="m-menu__link-icon la la-dashboard"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"> <span class="m-menu__link-text">Kategori</span></span></span></a>
 						</li>
-						<li class="m-menu__item {{ Route::currentRouteName() == 'artikel.index' ? 'm-menu__item--active' : '' }}" aria-haspopup="true">
+						<li class="m-menu__item" aria-haspopup="true">
 							<a href="{{ url('artikel') }}" class="m-menu__link "><i class="m-menu__link-icon la la-dashboard"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"> <span class="m-menu__link-text">Artikel</span></span></span></a>
 						</li>
-						<li class="m-menu__item {{ Route::currentRouteName() == 'menuGrouping.index' ? 'm-menu__item--active' : '' }}" aria-haspopup="true">
+						<li class="m-menu__item" aria-haspopup="true">
 							<a href="{{ url('menuGrouping') }}" class="m-menu__link "><i class="m-menu__link-icon la la-object-group"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"> <span class="m-menu__link-text">Menu Grouping</span></span></span></a>
+						</li>						
+						<li class="m-menu__item m-menu__item--submenu m-menu__item--open" aria-haspopup="true" m-menu-submenu-toggle="hover">
+							<a href="javascript:;" class="m-menu__link m-menu__toggle"><i class="m-menu__link-icon la la-users"></i><span class="m-menu__link-text">Management Users</span><i class="m-menu__ver-arrow la la-angle-right"></i></a>
+							<div class="m-menu__submenu " m-hidden-height="80" style=""><span class="m-menu__arrow"></span>
+								<ul class="m-menu__subnav">
+									<li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover"><a 	href="{{ url('usersIndex') }}" class="m-menu__link m-menu__toggle"><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">Users</span></a>
+									</li>
+								</ul>
+							</div>
 						</li>						
 					</ul>
 				</div>
-
 				<!-- END: Aside Menu -->
 			</div>
-
 			<!-- END: Left Aside -->
 			<div class="m-grid__item m-grid__item--fluid m-wrapper">
 
@@ -254,7 +261,7 @@
 				<div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
 					<div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
 						<span class="m-footer__copyright">
-							2019 &copy; Devloped by <a href="https://www.4visionmedia.com" class="m-link">4 Vision Media</a>
+							2019 &copy; Developed by <a href="https://www.4visionmedia.com" class="m-link">4 Vision Media</a>
 						</span>
 					</div>
 					<div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">

@@ -24,8 +24,7 @@ class KategoriArtikelRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required|unique:kategori_artikel,nama',
-            'status_kategori' => 'min:10'
+            'nama' => 'required|unique:kategori_artikel,nama',            
         ];
     }
 

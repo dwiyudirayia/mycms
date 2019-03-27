@@ -344,20 +344,11 @@ $(document).ready(function () {
         formData.append('status_artikel', status_artikel);
         formData.append('_token', token);
         formData.append('_method', 'PUT');
-        
-        const formDataPut = new FormData();
-        formDataPut.append('kategori_id', kategori_id);
-        formDataPut.append('judul', judul);
-        formDataPut.append('headerImage', headerImage);
-        formDataPut.append('isi', isi);
-        formDataPut.append('status_artikel', status_artikel);
-        formDataPut.append('_token', token);
-        formDataPut.append('_method', 'PUT');
 
         $.ajax({
             type: method,
             url: ((judul == '') && (method == 'PUT')) ? 'gantiStatusArtikel/' + param : 'artikel/' + param,
-            data: ((judul == '') && (method == 'PUT') ? formDataPut : formData),
+            data: formData,
             cache: false,
             contentType: false,
             processData: false,
@@ -367,6 +358,152 @@ $(document).ready(function () {
                 $('#triggerReset').trigger('reset');
                 $('#modalArtikel').modal('hide');
                 artikelTable.reload();
+            },
+            error: function () {
+                notifikasiToastr();
+                toastr.error("Anda Gagal Memproses Data", "Notifikasi");
+            }
+        });
+    });
+    //----------------------------------------------------------------------------------------------------------------//
+    // Backend JS User
+
+    const usersIndexTable = $("#usersIndex-table").mDatatable({
+        data: {
+            type: "remote",
+            source: {
+                read: {
+                    url: '/getUsers',
+                    method: 'GET',
+                }
+            },
+            pageSize: 10,
+            saveState: {
+                cookie: !1,
+                webstorage: !0
+            },
+            serverPaging: !0,
+            serverFiltering: !0,
+            serverSorting: !0,
+        },
+        layout: {
+            theme: "default",
+            class: "table table-bordered",
+            scroll: 10,
+            height: 300,
+            width: 100,
+            footer: 11,
+        },
+        sortable: !0,
+        filterable: !0,
+        pagination: !0,
+        columns: [{
+            field: "id",
+            title: "#",
+            sortable: !1,
+            width: 0,
+            selector: {
+                class: "m-checkbox--solid m-checkbox--brand"
+            },
+            textAlign: "center"
+        },
+        {
+            field: "name",
+            title: "Nama",
+            sortable: !0,
+            width: 180,
+            textAlign: "center",
+        },
+        {
+            field: "action",
+            title: "Action",
+            sortable: !1,
+            width: 180,
+            textAlign: "center",
+        }
+        ]
+    })
+    $('#usersIndex-table').on('click', '#deleteManagementUser', function () {
+        const param = $(this).data('id');
+        const label = $(this).data('label');
+        const method = "DELETE";
+
+        $('#modalManagementUser').modal({
+            show: true
+        });
+
+        $('#buttonSubmit').removeClass('btn-primary');
+        $('#buttonSubmit').addClass('btn-danger');
+        $('#buttonSubmit').text('Delete');
+        $('#modalManagementUserLabel').html('Delete User');
+        $('p').show();
+        $('p').html('Data Yang di Hapus Dengan Nama <strong>' + label + '</strong>');
+        $('#formInfo').hide();
+        $('#idParam').val(param);
+        $('#method').val(method);
+    })
+    $('#usersIndex-table').on('click', '#editManagementUser', function () {
+        const param = $(this).data('id');
+        const method = "PUT";
+
+        $('#modalManagementUser').modal({
+            show: true
+        });
+
+        $('#buttonSubmit').addClass('btn-primary');
+        $('#buttonSubmit').removeClass('btn-danger');
+        $('#buttonSubmit').text('Submit');
+
+        $('p').hide();
+        $('#modalManagementUserLabel').html('Edit User');
+        $('#formInfo').show();
+        $('#idParam').val(param);
+        $('#method').val(method);
+
+        $.ajax({
+            url: 'oprationUsers/' + param + '/edit',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                $('#name').val(data.name);
+                $('#email').val(data.email);
+            }
+        })
+    })
+
+    $('#usersIndex-table').on('click', '#gantiStatus', function () {
+        const param = $(this).data('id');
+        const label = $(this).data('label');
+        const method = "PUT";
+        $('#deleteManagementUser').modal({
+            show: true
+        });
+
+        $('#modalManagementUserLabel').html('Ganti Status User');
+        $('p').show();
+        $('p').html('Ganti Status di Nama User <strong>' + label + '</strong>');
+        $('#formInfo').hide();
+        $('#idParam').val(param);
+        $('#method').val(method);
+    })
+    $('#modalManagementUser').on('click', '#buttonSubmit', function () {
+        const param = $('#idParam').val();
+        const method = $('#method').val();
+        const name = $('#name').val();
+        const email = $('#email').val();
+        $.ajax({
+            type: method,
+            url: ((name == '') && (method == 'PUT')) ? 'gantiStatusKategori/' + param : 'oprationUsers/' + param,
+            data: {
+                name: name,
+                email: email,
+                '_token': $('input[name=_token]').val(),
+            },
+            success: function (data) {                
+                $('#triggerReset').trigger('reset');
+                notifikasiToastr();
+                $('#modalManagementUser').modal('hide');
+                usersIndexTable.reload();
             },
             error: function () {
                 notifikasiToastr();
@@ -480,7 +617,7 @@ $(document).ready(function () {
     })
     $('#modalMenuGrouping').on('click', '#buttonSubmit', function () {
         const param = $('#idParam').val();
-        const method = $('#method').val();        
+        const method = $('#method').val();
         const nama = $('#nama').val();
         $.ajax({
             type: method,
