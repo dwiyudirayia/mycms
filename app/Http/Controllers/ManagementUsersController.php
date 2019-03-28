@@ -8,15 +8,18 @@ use App\Http\Requests\ManagementUsersRequest;
 use Hash;
 use DataTables;
 use Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class ManagementUsersController extends Controller
 {
     public function usersIndex()
     {
-        return view('admin.managementUsers.usersIndex');
+        $roles = Role::select(['id','name'])->get();
+        return view('admin.managementUsers.usersIndex',['roles' => $roles]);
     }
     public function createUsers()
-    {        
+    {
         return view('admin.managementUsers.createUsers');
     }
     // public function callAPI($method, $url, $data){
@@ -79,6 +82,34 @@ class ManagementUsersController extends Controller
         //     echo $value['kode_paket']."<br>";
         // }
     // }
+    public function addRole(Request $request)
+    {
+        try {
+            $role = Role::create([
+                'name' => $request->input('name'),
+                'guard_name' => 'web'
+            ]);
+            return back()->with('successRole', 'Role Berhasil di Tambah');            
+        } catch (\Exception $e) {
+            return back()->with('dangerRole', $e->getMessage());
+        }    
+    }
+    public function roleAndPermission()
+    {
+        return view('admin.managementUsers.roleAndPermission');
+    }
+    public function addPermission(Request $request)
+    {
+        try {
+            $permission = Permission::create([
+                'name' => $request->input('name'),
+                'guard_name' => 'web'
+            ]);
+            return back()->with('successPermission', 'Role Berhasil di Tambah');            
+        } catch (\Exception $e) {
+            return back()->with('dangerPermission', $e->getMessage());
+        }    
+    }    
     public function getUsers()
     {
         $getUser = User::select(['id', 'name'])->where('id', '!=', Auth::user()->id)->get();
@@ -106,14 +137,22 @@ class ManagementUsersController extends Controller
     }
     public function editUsers($id)
     {
-        $user = User::findOrFail($id);
-        return response($user,200);
+        $user = User::findOrFail($id); // Ambil User Berdasarkan ID
+        $role = Role::get(); // Ambil Table Role
+        $getRoleNames = $user->getRoleNames(); //Ambil Value Role dari User Find Or Fail
+
+        return response()->json([
+            'user' => $user,
+            'role' => $role,
+            'getRoleNames' => $getRoleNames
+        ]);
     }
     public function updateUsers(Request $request, $id)
     {
         $user = User::findOrFail($id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
+        $user->syncRoles($request->input('role'));
         $user->save();
     }
 }

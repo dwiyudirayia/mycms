@@ -18,6 +18,18 @@
 @endif
 <form method="POST" action="{{route('kategori.store')}}">
     {{csrf_field()}}
+    @if(session()->has('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+            {{ session()->get('success') }}
+    </div>
+    @endif
+    @if(session()->has('danger'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+            {{ session()->get('danger') }}
+    </div>
+    @endif    
     <div class="col-sm-12 m-form__group-sub">
         <label class="form-control-label">Nama</label>
         <input type="text" name="nama" class="form-control m-input" placeholder="Enter text">        

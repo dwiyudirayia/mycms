@@ -200,13 +200,15 @@
 						</li>
 						<li class="m-menu__item" aria-haspopup="true">
 							<a href="{{ url('menuGrouping') }}" class="m-menu__link "><i class="m-menu__link-icon la la-object-group"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"> <span class="m-menu__link-text">Menu Grouping</span></span></span></a>
-						</li>						
+						</li>
 						<li class="m-menu__item m-menu__item--submenu m-menu__item--open" aria-haspopup="true" m-menu-submenu-toggle="hover">
 							<a href="javascript:;" class="m-menu__link m-menu__toggle"><i class="m-menu__link-icon la la-users"></i><span class="m-menu__link-text">Management Users</span><i class="m-menu__ver-arrow la la-angle-right"></i></a>
 							<div class="m-menu__submenu " m-hidden-height="80" style=""><span class="m-menu__arrow"></span>
 								<ul class="m-menu__subnav">
 									<li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover"><a 	href="{{ url('usersIndex') }}" class="m-menu__link m-menu__toggle"><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">Users</span></a>
 									</li>
+									<li class="m-menu__item m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover"><a 	href="{{ url('roleAndPermission') }}" class="m-menu__link m-menu__toggle"><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">Role and Permission</span></a>
+									</li>									
 								</ul>
 							</div>
 						</li>						
@@ -239,7 +241,7 @@
 											</h3>
 										</div>
 									</div>
-									@include('auth.reusableComponent.quickAction')
+									@include('admin.reusableComponent.quickAction')
 								</div>
 								<div class="m-portlet__body">
 									@yield('isi')									

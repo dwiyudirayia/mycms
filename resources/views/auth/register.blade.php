@@ -1,5 +1,7 @@
 @extends('layouts.appFormAdmin')
-
+@section('title')
+    Register
+@endsection
 @section('isi')
 <div class="m-login__body signin-padding-top">
     <div class="m-login__signin">

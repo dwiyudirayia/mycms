@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-  Tambah User
+    Tambah User
 @endsection
 @section('headerPage')
     Tambah User

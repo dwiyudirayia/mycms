@@ -39,5 +39,8 @@ Route::group(['middleware' => ['auth','verified']], function () {
     Route::get('oprationUsers/{id}/edit','ManagementUsersController@editUsers');
     Route::put('oprationUsers/{id}/','ManagementUsersController@updateUsers');    
     Route::get('getUsers','ManagementUsersController@getUsers');
-    Route::get('getApi','ManagementUsersController@getApi');
+    Route::get('roleAndPermission','ManagementUsersController@roleAndPermission');
+    Route::post('addRole','ManagementUsersController@addRole');
+    Route::post('addPermission','ManagementUsersController@addPermission');
+    // Route::get('getApi','ManagementUsersController@getApi');
 });

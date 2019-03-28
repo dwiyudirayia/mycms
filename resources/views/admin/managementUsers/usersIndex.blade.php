@@ -48,6 +48,11 @@
                             <label for="headerImage">Email</label>
                             <input type="email" name="email" id="email" class="form-control" placeholder="Masukan Email Yang Valid">
                         </div>
+                        <div class="form-group">
+                            <label for="headerImage">Role</label>
+                            <div class="m-checkbox-inline" id="updateRoles">                                
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

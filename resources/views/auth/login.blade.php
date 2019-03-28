@@ -1,10 +1,25 @@
 @extends('layouts.appFormAdmin')
+@section('title')
+    Login
+@endsection
 @section('isi')
 <div class="m-login__body signin-padding-top">
   <div class="m-login__signin" id="form-login">
     <div class="m-login__title">
       <h3>Sign In To Admin</h3>
     </div>
+    @if(session()->has('status'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        {{ session()->get('status') }}
+    </div>
+    @endif
+    @if(session()->has('email'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        {{ session()->get('email') }}
+    </div>
+    @endif    
     <!--begin::Form-->
     <form action="{{ route('login') }}" method="POST">
       @csrf

@@ -20,11 +20,9 @@ $(document).ready(function () {
             data: {
                 src: src
             },
-            success: function (res) {
-                console.log(src)
+            success: function (res) {                
             },
             error: function (res) {
-                console.log(res)
             }
         })
     }
@@ -465,8 +463,20 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'JSON',
             success: function (data) {
-                $('#name').val(data.name);
-                $('#email').val(data.email);
+                $('#name').val(data.user.name);
+                $('#email').val(data.user.email);
+                console.log(data);
+                let roles = '';                
+                $.map(data.role, function (value, index) {
+                    
+                    roles += `<label class="m-checkbox m-checkbox--solid m-checkbox--primary">
+                                <input type="checkbox" name="role[]" value="${value.id}" ${(value.name === data.getRoleNames[index] ? "checked" : "")}> ${value.name}
+                                <span></span>
+                            </label>`                    
+                })
+
+                $('#updateRoles').html(roles)
+
             }
         })
     })
@@ -491,12 +501,17 @@ $(document).ready(function () {
         const method = $('#method').val();
         const name = $('#name').val();
         const email = $('#email').val();
+        const role = $('input[name="role[]"]:checked').map(function () {
+            return this.value; // $(this).val()
+        }).get();
+        
         $.ajax({
             type: method,
             url: ((name == '') && (method == 'PUT')) ? 'gantiStatusKategori/' + param : 'oprationUsers/' + param,
             data: {
                 name: name,
                 email: email,
+                role: role,
                 '_token': $('input[name=_token]').val(),
             },
             success: function (data) {                

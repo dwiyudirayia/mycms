@@ -46,13 +46,18 @@ class KategoriArtikelController extends Controller
      */
     public function store(KategoriArtikelRequest $request)
     {
-        $kategori = new KategoriArtikelModel();
-        $kategori->users_id = Auth::user()->id;
-        $kategori->nama = $request->input('nama');
-        $kategori->status_kategori = 1;
+        try {
+            $kategori = new KategoriArtikelModel();
+            $kategori->users_id = Auth::user()->id;
+            $kategori->nama = $request->input('nama');
+            $kategori->status_kategori = 1;
+            $kategori->save();
+            return back()->with('success','Kategori Berhasil di Tambahkan');
+        } catch (\Exception $e) {
+            return back()->with('danger', $e->getMessage());
+        }
 
-        $kategori->save();
-        return redirect()->route('kategori.index');
+        
     }
     /**
      * Show the form for editing the specified resource.
