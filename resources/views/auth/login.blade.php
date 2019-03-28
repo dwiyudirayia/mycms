@@ -1,7 +1,7 @@
 @extends('layouts.appFormAdmin')
 @section('isi')
 <div class="m-login__body signin-padding-top">
-  <div class="m-login__signin">
+  <div class="m-login__signin" id="form-login">
     <div class="m-login__title">
       <h3>Sign In To Admin</h3>
     </div>
@@ -36,7 +36,7 @@
           </label>
         </div>
         <div class="col m--align-right">
-          <a href="javascript:;" id="m_login_forget_password" class="m-link">Forget Password ?</a>
+        <a href="javascript:;" id="m_login_forget_password" class="m-link">Forget Password ?</a>
         </div>
       </div>
       <div class="m-login__action justify-content-center">
@@ -51,8 +51,10 @@
       <h3>Forgotten Password ?</h3>
       <div class="m-login__desc">Enter your email to reset your password:</div>
     </div>
+
     <!--begin::Form-->
-    <form class="m-form m-form--state" action="">
+    <form class="m-form m-form--state" action="{{ route('password.email') }}" method="POST">
+      {{ csrf_field() }}
       <div class="form-group m-form__group">
         <div class="input-group file-input">
           <input class="form-control m-input" type="email" placeholder="Email" name="email">
@@ -62,14 +64,14 @@
         </div>
       </div>
       <div class="m-login__action justify-content-center">
-        <button id="m_login_forget_password_submit" class="btn btn-danger m-btn m-btn--pill m-btn--custom m-btn--air">Request</button>
+        <button class="btn btn-danger m-btn m-btn--pill m-btn--custom m-btn--air">Request</button>
         <button id="m_login_forget_password_cancel" class="btn btn-outline-danger m-btn m-btn--pill m-btn--custom">Cancel</button>
       </div>
-      </form>
+    </form>
   </div>
   <div class="m-login__account">
-      <span>© 2019</span>
-      <a href="#" class="m-link m--font-primary">WebClient</a>
+    <span>© 2019</span>
+    <a href="#" class="m-link m--font-primary">WebClient</a>
   </div>
 
   <!--end::Signin-->

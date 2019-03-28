@@ -15,11 +15,12 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Auth::routes();
+Auth::routes(['verified' => true]);
 Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
 Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
 Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-Route::group(['middleware' => ['auth']], function () {
+Route::get('verifyemail/{token}','Auth\RegisterController@verify');
+Route::group(['middleware' => ['auth','verified']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('artikel', 'ArtikelController');
     Route::post('/artikelFormData/{id}','ArtikelController@update');

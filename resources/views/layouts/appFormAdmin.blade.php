@@ -30,7 +30,7 @@
     <div class="m-grid m-grid--hor m-grid--root m-page">
         <div class="m-grid__item m-grid__item--fluid m-grid m-grid--desktop m-grid--ver-desktop m-grid--hor-tablet-and-mobile m-login m-login--6 m-login--signin"
             id="m_login">
-            <div class="m-grid__item   m-grid__item--order-tablet-and-mobile-2  m-grid m-grid--hor m-login__aside "
+            <div class="m-grid__item m-grid__item--order-tablet-and-mobile-2  m-grid m-grid--hor m-login__aside "
                 style="background-image: url(assets/app/media/img//bg/bg-9.jpg);">
                 <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver">
                     <div class="m-grid__item m-grid__item--middle m--align-center">
